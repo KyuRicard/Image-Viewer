@@ -1,8 +1,24 @@
 #include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <sstream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
 using namespace std;
+
+std::vector<std::string> Split(const std::string & str, char delim)
+{
+	std::vector<std::string> vec;
+	std::stringstream ss(str);
+	std::string line;
+	while (std::getline(ss, line, delim))
+	{
+		vec.push_back(line);
+	}
+	return vec;
+}
 
 int main(int argc, char * args[])
 {
@@ -13,8 +29,32 @@ int main(int argc, char * args[])
 	}
 	SDL_Init(SDL_INIT_VIDEO);
 	++args;
-
+	const std::vector<std::string> extensions = {
+		"png", "jpg", "gif", "jpeg", "bmp", "tiff", "xcf"
+	};
 	char * title = args[0];
+	bool errorProof = true;
+	if (--argc > 0)
+	{
+		++args;
+		char * arg = args[0];
+		if (strcmp(arg, "--no-error"))
+		{
+			errorProof = false;
+		}
+	}
+	
+	if (errorProof)
+	{
+		auto vec = Split(title, '.');
+		std::string ext = vec[1];
+		if (std::find(extensions.begin(), extensions.end(), ext) == extensions.end())
+		{
+			std::cout << "Invalid image format. Try to use a Image format.\n";
+			return 1;
+		}
+	}
+
 	auto wnd = SDL_CreateWindow(title, 0, 0, 640, 480, 0); 
 	auto rnd = SDL_CreateRenderer(wnd, -1, SDL_RENDERER_ACCELERATED);
 	
