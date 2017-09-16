@@ -47,7 +47,7 @@ int main(int argc, char * args[])
 	if (errorProof)
 	{
 		auto vec = Split(title, '.');
-		std::string ext = vec[1];
+		std::string ext = vec[vec.size()-1];
 		if (std::find(extensions.begin(), extensions.end(), ext) == extensions.end())
 		{
 			std::cout << "Invalid image format. Try to use a Image format.\n";
