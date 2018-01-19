@@ -50,18 +50,8 @@ int main(int argc, char * args[])
 	cerr << ext << '\n';
 	if (std::find(extensions.begin(), extensions.end(), ext) == extensions.end())
 	{
-<<<<<<< HEAD
 		std::cout << "Invalid image format. Try to use a Image format.\n";
 		return EXIT_FAILURE;
-=======
-		auto vec = Split(title, '.');
-		std::string ext = vec[vec.size()-1];
-		if (std::find(extensions.begin(), extensions.end(), ext) == extensions.end())
-		{
-			std::cout << "Invalid image format. Try to use a Image format.\n";
-			return 1;
-		}
->>>>>>> c1987d8eae134e7011818aada93a425d28fa2ee3
 	}
 
 	auto wnd = SDL_CreateWindow(title, 0, 0, 640, 480, 0); 
