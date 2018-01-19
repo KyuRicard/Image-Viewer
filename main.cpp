@@ -7,9 +7,6 @@
 #include <SDL2/SDL_image.h>
 #include <experimental/filesystem>
 
-using namespace std;
-using namespace std::experimental::filesystem::v1;
-
 std::vector<std::string> Split(const std::string & str, char delim)
 {
 	std::vector<std::string> vec;
@@ -33,7 +30,7 @@ int main(int argc, char * args[])
 	++args;
 
 	std::vector<std::string> extensions;
-	#define _EXT(n) extensions.push_back(string(n));
+	#define _EXT(n) extensions.push_back(std::string(n));
 	_EXT(".png")
 	_EXT(".jpg")
 	_EXT(".gif")
@@ -46,8 +43,8 @@ int main(int argc, char * args[])
 	char * title = args[0];
 	
 	auto vec = Split(title, '.');
-	std::string ext = path(title).extension().string();
-	cerr << ext << '\n';
+	std::string ext = std::experimental::filesystem::v1::path(title).extension().string();
+	
 	if (std::find(extensions.begin(), extensions.end(), ext) == extensions.end())
 	{
 		std::cout << "Invalid image format. Try to use a Image format.\n";
