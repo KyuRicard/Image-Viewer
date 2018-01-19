@@ -5,8 +5,10 @@
 #include <sstream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <experimental/filesystem>
 
 using namespace std;
+using namespace std::experimental::filesystem::v1;
 
 std::vector<std::string> Split(const std::string & str, char delim)
 {
@@ -29,30 +31,27 @@ int main(int argc, char * args[])
 	}
 	SDL_Init(SDL_INIT_VIDEO);
 	++args;
-	const std::vector<std::string> extensions = {
-		"png", "jpg", "gif", "jpeg", "bmp", "tiff", "xcf"
-	};
+
+	std::vector<std::string> extensions;
+	#define _EXT(n) extensions.push_back(string(n));
+	_EXT(".png")
+	_EXT(".jpg")
+	_EXT(".gif")
+	_EXT(".jpeg")
+	_EXT(".bmp")
+	_EXT(".tiff")
+	_EXT(".xcf")
+	#undef _EXT
+
 	char * title = args[0];
-	bool errorProof = true;
-	if (--argc > 0)
-	{
-		++args;
-		char * arg = args[0];
-		if (strcmp(arg, "--no-error"))
-		{
-			errorProof = false;
-		}
-	}
 	
-	if (errorProof)
+	auto vec = Split(title, '.');
+	std::string ext = path(title).extension().string();
+	cerr << ext << '\n';
+	if (std::find(extensions.begin(), extensions.end(), ext) == extensions.end())
 	{
-		auto vec = Split(title, '.');
-		std::string ext = vec[1];
-		if (std::find(extensions.begin(), extensions.end(), ext) == extensions.end())
-		{
-			std::cout << "Invalid image format. Try to use a Image format.\n";
-			return 1;
-		}
+		std::cout << "Invalid image format. Try to use a Image format.\n";
+		return EXIT_FAILURE;
 	}
 
 	auto wnd = SDL_CreateWindow(title, 0, 0, 640, 480, 0); 
