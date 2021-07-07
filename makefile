@@ -5,8 +5,10 @@ OUT=imgviewer
 RELEASE=-O3
 DEBUG=-O0 -g -fbuiltin
 
+all: clean build install
+
 clean:
-	rm $(OUT)
+	-rm $(OUT)
 
 build:
 	$(CC) $(CC_FLAGS) $(RELEASE) $(LIBS) *.cpp -o $(OUT) -lstdc++fs
